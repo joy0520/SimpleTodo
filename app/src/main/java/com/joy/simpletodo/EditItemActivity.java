@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import static com.joy.simpletodo.MainActivity.INTENT_EXTRA_ITEM_NAME;
 
@@ -16,6 +17,7 @@ import static com.joy.simpletodo.MainActivity.INTENT_EXTRA_ITEM_NAME;
 public class EditItemActivity extends Activity {
     EditText mEditText;
     Button mButton;
+    String mOriginalItemName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,7 @@ public class EditItemActivity extends Activity {
         mButton = (Button) findViewById(R.id.button);
 
         String itemName = getIntent().getStringExtra(INTENT_EXTRA_ITEM_NAME);
+        mOriginalItemName = itemName;
         mEditText.setText(itemName);
     }
 
@@ -35,6 +38,11 @@ public class EditItemActivity extends Activity {
     @Override
     public void finish() {
         String newItemName = mEditText.getText().toString();
+        if (newItemName.isEmpty()) {
+            Toast.makeText(this, "Todo item cannot be empty", Toast.LENGTH_SHORT)
+                    .show();
+            newItemName = mOriginalItemName;
+        }
         Intent resultIntent = new Intent();
         resultIntent.putExtra(INTENT_EXTRA_ITEM_NAME, newItemName);
 

@@ -5,9 +5,16 @@ package com.joy.simpletodo.item;
  */
 
 public class TodoItem {
+    public int id;
     public String itemName;
 
-    public TodoItem(String itemName) {
+    public TodoItem(int id, String itemName) {
+        this.id = id;
         this.itemName = itemName;
+    }
+
+    @Override
+    public String toString() {
+        return "TodoItem(" + id + ", " + itemName + ")";
     }
 }
