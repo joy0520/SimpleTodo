@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import static com.joy.simpletodo.MainActivity.INTENT_EXTRA_ITEM_NAME;
+
 /**
  * Created by Joy on 2017/2/3.
  */
@@ -22,16 +24,21 @@ public class EditItemActivity extends Activity {
         mEditText = (EditText) findViewById(R.id.editText);
         mButton = (Button) findViewById(R.id.button);
 
-        String itemName = getIntent().getStringExtra("itemName");
+        String itemName = getIntent().getStringExtra(INTENT_EXTRA_ITEM_NAME);
         mEditText.setText(itemName);
     }
 
     public void onSaveItem(View v) {
+        finish();
+    }
+
+    @Override
+    public void finish() {
         String newItemName = mEditText.getText().toString();
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("itemName", newItemName);
+        resultIntent.putExtra(INTENT_EXTRA_ITEM_NAME, newItemName);
 
         setResult(MainActivity.REQUEST_CODE, resultIntent);
-        finish();
+        super.finish();
     }
 }

@@ -17,7 +17,7 @@ The following **required** functionality is completed:
 The following **optional** features are implemented:
 
 * [ ] Persist the todo items [into SQLite](http://guides.codepath.com/android/Persisting-Data-to-the-Device#sqlite) instead of a text file
-* [ ] Improve style of the todo items in the list [using a custom adapter](http://guides.codepath.com/android/Using-an-ArrayAdapter-with-ListView)
+* [O] Improve style of the todo items in the list [using a custom adapter](http://guides.codepath.com/android/Using-an-ArrayAdapter-with-ListView)
 * [ ] Add support for completion due dates for todo items (and display within listview item)
 * [ ] Use a [DialogFragment](http://guides.codepath.com/android/Using-DialogFragment) instead of new Activity for editing items
 * [ ] Add support for selecting the priority of each todo item (and display in listview item)
@@ -33,7 +33,7 @@ Here's a walkthrough of implemented user stories:
 
 <img src='http://imgur.com/a/YC008' title='my simple todo project gif'/>
 
-GIF created with [GifMaker].
+GIF created with [GifMaker] (https://play.google.com/store/apps/details?id=com.kayak.studio.gifmaker&hl=zh_HK ).
 
 ## Notes
 
