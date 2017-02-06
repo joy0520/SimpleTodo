@@ -3,27 +3,32 @@ package com.joy.simpletodo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.joy.simpletodo.edit.EditItemActivity;
 import com.joy.simpletodo.item.TodoItem;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE = 0;
     public static final String INTENT_EXTRA_ITEM_NAME = "itemName";
-    public static final String FILE_NAME = "todo.txt";
+    public static final String INTENT_EXTRA_ITEM_DUE_DATE = "itemDueDate";
+
     public static final boolean DEBUG = true;
 
     private ArrayList<TodoItem> mItems;
-    private ArrayList<String> mTempItemNames;
     private ItemsAdapter mItemAdapter;
     private ListView mItemsListView;
     /**
@@ -51,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     public void onAddItem(View v) {
         EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
-        // Prevent empty item
+        // Prevent empty item.
         if (itemText.isEmpty()) {
             Toast.makeText(this, "Todo item cannot be empty", Toast.LENGTH_SHORT)
                     .show();
@@ -59,6 +64,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         TodoItem item = new TodoItem(mItemAdapter.getCount(), itemText);
+        // Assign a temporary due date.
+        GregorianCalendar c = new GregorianCalendar();
+        item.setDueDate(new GregorianCalendar(c.get(GregorianCalendar.YEAR),
+                c.get(GregorianCalendar.MONTH),
+                c.get(GregorianCalendar.DAY_OF_MONTH)));
+        Log.i("joy.onAddItem", "" + item);
+
         mItemAdapter.add(item);
         mItemsListView.setSelection(mItemsListView.getCount() - 1); //scroll to bottom
         etNewItem.setText("");
@@ -72,9 +84,9 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onItemLongClick(AdapterView<?> parent,
                                                    View view, int position, long id) {
                         // Remove an item when long-clicked
+                        deleteItem(mItems.get(position));
                         mItems.remove(position);
                         mItemAdapter.notifyDataSetChanged();
-                        deleteItem(position);
                         return true;
                     }
                 });
@@ -82,14 +94,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent,
                                     View view, int position, long id) {
-                if (view instanceof LinearLayout) {
+                if (view instanceof ViewGroup) {
                     // Go to an edit page for the item clicked
                     mItemToBeUpdated = position;
-                    LinearLayout layout = (LinearLayout) view;
+                    ViewGroup layout = (ViewGroup) view;
                     String itemName = ((TextView) layout.findViewById(R.id.item_name))
                             .getText().toString();
                     Intent intent = new Intent(MainActivity.this, EditItemActivity.class);
                     intent.putExtra(INTENT_EXTRA_ITEM_NAME, itemName);
+                    intent.putExtra(INTENT_EXTRA_ITEM_DUE_DATE,
+                            mItemAdapter.getItem(position).dueDate.getTime());
                     MainActivity.this.startActivityForResult(intent, REQUEST_CODE);
                 }
             }
@@ -102,7 +116,12 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE && data != null) {
             // Get the result and update the corresponding item
             String newItemName = data.getStringExtra(INTENT_EXTRA_ITEM_NAME);
-            TodoItem item = new TodoItem(mItemToBeUpdated, newItemName);
+            TodoItem item = new TodoItem(mItems.get(mItemToBeUpdated).id, newItemName);
+            // Update due date
+            Date date = (Date) data.getSerializableExtra(INTENT_EXTRA_ITEM_DUE_DATE);
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(date);
+            item.setDueDate(calendar);
 
             mItems.remove(mItemToBeUpdated);
             mItems.add(mItemToBeUpdated, item);
@@ -130,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         mItemsSQLHelper.updateItem(item);
     }
 
-    private void deleteItem(int position) {
-        mItemsSQLHelper.deleteItem(position);
+    private void deleteItem(TodoItem item) {
+        mItemsSQLHelper.deleteItem(item);
     }
 }

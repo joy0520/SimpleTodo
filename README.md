@@ -4,7 +4,7 @@ SimpleTodo is an android app that allows building a todo list and basic todo ite
 
 Submitted by: SimpleTodo
 
-Time spent: 6 hours spent in total
+Time spent: 14.5 hours spent in total
 
 ## User Stories
 
@@ -18,7 +18,7 @@ The following **optional** features are implemented:
 
 * [O] Persist the todo items [into SQLite](http://guides.codepath.com/android/Persisting-Data-to-the-Device#sqlite) instead of a text file
 * [O] Improve style of the todo items in the list [using a custom adapter](http://guides.codepath.com/android/Using-an-ArrayAdapter-with-ListView)
-* [ ] Add support for completion due dates for todo items (and display within listview item)
+* [O] Add support for completion due dates for todo items (and display within listview item)
 * [ ] Use a [DialogFragment](http://guides.codepath.com/android/Using-DialogFragment) instead of new Activity for editing items
 * [ ] Add support for selecting the priority of each todo item (and display in listview item)
 * [ ] Tweak the style improving the UI / UX, play with colors, images or backgrounds
@@ -26,13 +26,14 @@ The following **optional** features are implemented:
 The following **additional** features are implemented:
 
 * [O] ListView would scroll to bottom when there are more than one page of items and one more item added.
-* [O] Prevent an empty todo item added or an itemt edited as empty.
+* [O] Prevent an empty todo item added or an item edited as empty.
+* [O] Different color on each item's due date to hint users.
 
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://imgur.com/a/YC008' title='my simple todo project gif'/>
+<img src='http://i.imgur.com/Y4mjPOf.gif' title='SimpleTodo project'/>
 
 GIF created with [GifMaker] (https://play.google.com/store/apps/details?id=com.kayak.studio.gifmaker&hl=zh_HK ).
 
